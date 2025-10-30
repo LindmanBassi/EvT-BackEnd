@@ -1,6 +1,6 @@
 package br.com.bassi.trabalho_facu_lp1.dto.response;
 
-import br.com.bassi.trabalho_facu_lp1.dto.EnderecoDTO;
+
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -14,7 +14,7 @@ public record LocalResponseDTO(
 
         @NotNull(message = "O endereço é obrigatório.")
         @Valid
-        EnderecoDTO endereco,
+        EnderecoResponseDTO  endereco,
 
         @NotNull(message = "A capacidade é obrigatória.")
         @Min(value = 1, message = "A capacidade deve ser maior que zero.")
