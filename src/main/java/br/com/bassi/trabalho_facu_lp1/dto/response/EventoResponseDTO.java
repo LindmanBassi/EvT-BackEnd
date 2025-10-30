@@ -1,4 +1,4 @@
-package br.com.bassi.trabalho_facu_lp1.dto;
+package br.com.bassi.trabalho_facu_lp1.dto.response;
 
 import br.com.bassi.trabalho_facu_lp1.domain.enuns.EnumEstadoEvento;
 import br.com.bassi.trabalho_facu_lp1.domain.enuns.EnumTipoEvento;
@@ -6,7 +6,8 @@ import jakarta.validation.constraints.NotBlank;
 
 import java.util.Date;
 
-public record EventoDTO(
+public record EventoResponseDTO(
+        Long id,
 
         Long localId,
 

@@ -1,15 +1,16 @@
 package br.com.bassi.trabalho_facu_lp1.controller;
 
-import br.com.bassi.trabalho_facu_lp1.domain.Evento;
 import br.com.bassi.trabalho_facu_lp1.dto.EventoDTO;
+import br.com.bassi.trabalho_facu_lp1.dto.response.EventoResponseDTO;
 import br.com.bassi.trabalho_facu_lp1.service.EventoService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
 import java.net.URI;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/eventos")
@@ -20,19 +21,18 @@ public class EventoController {
 
     @PreAuthorize("!hasAuthority('VISITANTE')")
     @PostMapping
-    public ResponseEntity<Evento> criarEvento(@RequestBody EventoDTO eventoDTO) {
-        var evento = eventoService.criarEvento(eventoDTO);
-        return ResponseEntity.created(URI.create("/eventos/" + evento.getId())).body(evento);
+    public ResponseEntity<EventoDTO> criarEvento(@RequestBody @Valid EventoDTO eventoDTO) {
+        var criado = eventoService.criarEvento(eventoDTO);
+        return ResponseEntity.created(URI.create("/eventos/" + criado.titulo())).body(criado);
     }
 
     @GetMapping
-    public ResponseEntity<List<Evento>> listarEventos() {
+    public ResponseEntity<List<EventoResponseDTO>> listarEventos() {
         return ResponseEntity.ok(eventoService.listarEventos());
     }
 
-    @PreAuthorize("!hasAuthority('VISITANTE')")
     @GetMapping("/{id}")
-    public ResponseEntity<Evento> buscarEventoPorId(@PathVariable Long id) {
+    public ResponseEntity<EventoResponseDTO> buscarEvento(@PathVariable Long id) {
         return eventoService.buscarEvento(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
@@ -47,8 +47,8 @@ public class EventoController {
 
     @PreAuthorize("!hasAuthority('VISITANTE')")
     @PutMapping("/{id}")
-    public ResponseEntity<Evento> editarEvento(@PathVariable Long id, @RequestBody EventoDTO eventoDTO) {
-        var evento = eventoService.editarEvento(id, eventoDTO);
-        return ResponseEntity.ok(evento);
+    public ResponseEntity<EventoDTO> editarEvento(@PathVariable Long id, @RequestBody @Valid EventoDTO eventoDTO) {
+        var atualizado = eventoService.editarEvento(id, eventoDTO);
+        return ResponseEntity.ok(atualizado);
     }
 }
