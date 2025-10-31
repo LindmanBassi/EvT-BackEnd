@@ -7,6 +7,8 @@ import br.com.bassi.trabalho_facu_lp1.dto.LocalDTO;
 
 import br.com.bassi.trabalho_facu_lp1.dto.response.EnderecoResponseDTO;
 import br.com.bassi.trabalho_facu_lp1.dto.response.LocalResponseDTO;
+import br.com.bassi.trabalho_facu_lp1.exceptions.EntidadeNaoEncontradaException;
+import br.com.bassi.trabalho_facu_lp1.exceptions.RegraNegocioException;
 import br.com.bassi.trabalho_facu_lp1.repositories.LocalRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -25,7 +27,7 @@ public class LocalService {
     public LocalDTO criarLocal(LocalDTO localDTO) {
 
         if (localRepository.existsByNome(localDTO.nome())) {
-            throw new IllegalArgumentException("Já existe um local com esse nome.");
+            throw new RegraNegocioException("Já existe um local com esse nome.");
         }
 
         Endereco endereco = construirEnderecoCompletado(localDTO.endereco());
@@ -39,6 +41,9 @@ public class LocalService {
     }
 
     public void deletarLocal(Long id) {
+        if (!localRepository.existsById(id)) {
+            throw new EntidadeNaoEncontradaException("Local não encontrado para exclusão.");
+        }
         localRepository.deleteById(id);
     }
 
@@ -57,18 +62,29 @@ public class LocalService {
     public LocalDTO editarLocal(Long id, LocalDTO localDTO) {
         return localRepository.findById(id)
                 .map(local -> {
+                    boolean nomeDuplicado = localRepository.existsByNome(localDTO.nome())
+                            && !local.getNome().equalsIgnoreCase(localDTO.nome());
+                    if (nomeDuplicado) {
+                        throw new RegraNegocioException("Já existe outro local com esse nome.");
+                    }
+
                     Endereco endereco = construirEnderecoCompletado(localDTO.endereco());
+
                     local.setNome(localDTO.nome());
                     local.setCapacidade(localDTO.capacidade());
                     local.setEndereco(endereco);
                     Local atualizado = localRepository.save(local);
                     return toLocalDTO(atualizado);
                 })
-                .orElseThrow(() -> new RuntimeException("Local não encontrado"));
+                .orElseThrow(() -> new EntidadeNaoEncontradaException("Local não encontrado."));
     }
 
     private Endereco construirEnderecoCompletado(EnderecoDTO dto) {
         var viaCep = cepService.buscarPorCep(dto.cep());
+
+        if (viaCep == null || viaCep.logradouro() == null) {
+            throw new RegraNegocioException("CEP inválido ou não encontrado.");
+        }
 
         return new Endereco(
                 viaCep.logradouro(),

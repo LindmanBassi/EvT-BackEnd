@@ -13,6 +13,7 @@ public record LocalDTO(
         @Valid
         EnderecoDTO endereco,
 
+        @NotNull(message = "A capacidade é obrigatória.")
         @Min(value = 1, message = "A capacidade deve ser maior que zero.")
-        int capacidade
+        Integer capacidade
 ) {}

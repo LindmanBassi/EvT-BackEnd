@@ -4,6 +4,8 @@ import br.com.bassi.trabalho_facu_lp1.domain.Usuario;
 import br.com.bassi.trabalho_facu_lp1.domain.enuns.EnumCargos;
 import br.com.bassi.trabalho_facu_lp1.dto.UsuarioDTO;
 import br.com.bassi.trabalho_facu_lp1.dto.response.UsuarioResponseDTO;
+import br.com.bassi.trabalho_facu_lp1.exceptions.CpfJaCadastradoException;
+import br.com.bassi.trabalho_facu_lp1.exceptions.EmailJaCadastradoException;
 import br.com.bassi.trabalho_facu_lp1.repositories.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,7 +22,10 @@ public class UsuarioService {
 
     public UsuarioDTO cadastrarUsuario(UsuarioDTO dto) {
         if (usuarioRepository.existsByEmail(dto.email())) {
-            throw new IllegalArgumentException("Email já cadastrado");
+            throw new EmailJaCadastradoException("E-mail já cadastrado!");
+        }
+        if (usuarioRepository.existsByCpf(dto.cpf())) {
+            throw new CpfJaCadastradoException("CPF já cadastrado!");
         }
 
         Usuario usuario = toEntity(dto);
