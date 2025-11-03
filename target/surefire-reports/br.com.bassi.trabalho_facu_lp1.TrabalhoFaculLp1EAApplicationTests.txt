@@ -1,4 +1,0 @@
--------------------------------------------------------------------------------
-Test set: br.com.bassi.trabalho_facu_lp1.TrabalhoFaculLp1EAApplicationTests
--------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 11.22 s -- in br.com.bassi.trabalho_facu_lp1.TrabalhoFaculLp1EAApplicationTests
