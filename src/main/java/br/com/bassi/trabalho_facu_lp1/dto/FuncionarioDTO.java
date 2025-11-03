@@ -2,10 +2,7 @@ package br.com.bassi.trabalho_facu_lp1.dto;
 
 import br.com.bassi.trabalho_facu_lp1.domain.enuns.EnumCargos;
 import br.com.bassi.trabalho_facu_lp1.domain.enuns.EnumDepartamento;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 
 public record FuncionarioDTO(
         @NotBlank(message = "O nome é obrigatório")
@@ -23,9 +20,9 @@ public record FuncionarioDTO(
         @Size(min = 6, message = "A senha deve ter no mínimo 6 caracteres.")
         String senha,
 
-        @NotBlank(message = "O cargo é obrigatório")
+        @NotNull(message = "O cargo é obrigatório.")
         EnumCargos cargo,
 
-        @NotBlank(message = "O departamenento é obrigatório")
+        @NotNull(message = "O departamento é obrigatório.")
         EnumDepartamento departamento
 ) {}

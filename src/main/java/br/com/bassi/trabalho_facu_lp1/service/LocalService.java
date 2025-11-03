@@ -62,9 +62,8 @@ public class LocalService {
     public LocalDTO editarLocal(Long id, LocalDTO localDTO) {
         return localRepository.findById(id)
                 .map(local -> {
-                    boolean nomeDuplicado = localRepository.existsByNome(localDTO.nome())
-                            && !local.getNome().equalsIgnoreCase(localDTO.nome());
-                    if (nomeDuplicado) {
+                    if (localRepository.existsByNome(localDTO.nome()) &&
+                            !local.getNome().equalsIgnoreCase(localDTO.nome())) {
                         throw new RegraNegocioException("Já existe outro local com esse nome.");
                     }
 
@@ -73,11 +72,13 @@ public class LocalService {
                     local.setNome(localDTO.nome());
                     local.setCapacidade(localDTO.capacidade());
                     local.setEndereco(endereco);
+
                     Local atualizado = localRepository.save(local);
                     return toLocalDTO(atualizado);
                 })
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Local não encontrado."));
     }
+
 
     private Endereco construirEnderecoCompletado(EnderecoDTO dto) {
         var viaCep = cepService.buscarPorCep(dto.cep());

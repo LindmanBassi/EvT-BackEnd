@@ -58,6 +58,14 @@ public class GlobalExceptionHandler {
                 .body(new ErroResponse(HttpStatus.NOT_FOUND.value(), ex.getMessage()));
     }
 
+    @ExceptionHandler(CredenciaisInvalidasException.class)
+    public ResponseEntity<ErroResponse> handleCredenciaisInvalidas(CredenciaisInvalidasException ex) {
+        return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .body(new ErroResponse(HttpStatus.UNAUTHORIZED.value(), ex.getMessage()));
+    }
+
+
     record ErroResponse(Integer status, String mensagem, LocalDateTime dataHora) {
         public ErroResponse(Integer status, String mensagem) {
             this(status, mensagem, LocalDateTime.now());

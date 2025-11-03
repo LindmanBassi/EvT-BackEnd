@@ -7,6 +7,8 @@ import br.com.bassi.trabalho_facu_lp1.domain.enuns.EnumEstadoEvento;
 import br.com.bassi.trabalho_facu_lp1.domain.enuns.EnumTipoEvento;
 import br.com.bassi.trabalho_facu_lp1.dto.EventoDTO;
 import br.com.bassi.trabalho_facu_lp1.dto.response.EventoResponseDTO;
+import br.com.bassi.trabalho_facu_lp1.exceptions.EntidadeNaoEncontradaException;
+import br.com.bassi.trabalho_facu_lp1.exceptions.RegraNegocioException;
 import br.com.bassi.trabalho_facu_lp1.repositories.EventoRepository;
 import br.com.bassi.trabalho_facu_lp1.repositories.LocalRepository;
 import br.com.bassi.trabalho_facu_lp1.repositories.UsuarioRepository;
@@ -98,24 +100,34 @@ public class EventoService {
         evento.setVagas(dto.vagas());
         evento.setTipoEvento(dto.tipoEvento());
 
+        // Define o estado do evento baseado na data
         if (dto.data().before(new Date())) {
             evento.setEstadoEvento(EnumEstadoEvento.FECHADO);
         } else {
             evento.setEstadoEvento(dto.estadoEvento() != null ? dto.estadoEvento() : EnumEstadoEvento.ABERTO);
         }
 
-        if (dto.tipoEvento() != EnumTipoEvento.REMOTO && dto.localId() != null) {
+        if (dto.tipoEvento() != EnumTipoEvento.REMOTO) {
+            if (dto.localId() == null) {
+                throw new RegraNegocioException("O local é obrigatório para eventos presenciais.");
+            }
+
             Local local = localRepository.findById(dto.localId())
-                    .orElseThrow(() -> new RuntimeException("Local não encontrado"));
+                    .orElseThrow(() -> new EntidadeNaoEncontradaException("Local não encontrado"));
             evento.setLocal(local);
         }
 
-        Usuario palestrante = usuarioRepository.findById(dto.palestranteId())
-                .orElseThrow(() -> new RuntimeException("Palestrante não encontrado"));
-        evento.setPalestrante(palestrante);
+        // Se o palestranteId foi fornecido, buscar o palestrante
+        if (dto.palestranteId() != null) {
+            Usuario palestrante = usuarioRepository.findById(dto.palestranteId())
+                    .orElseThrow(() -> new EntidadeNaoEncontradaException("Palestrante não encontrado"));
+            evento.setPalestrante(palestrante);
+        }
 
         return evento;
     }
+
+
 
     private Evento atualizarEstadoSeNecessario(Evento evento) {
         if (evento.getData().before(new Date()) && evento.getEstadoEvento() != EnumEstadoEvento.FECHADO) {

@@ -1,5 +1,7 @@
 package br.com.bassi.trabalho_facu_lp1.service;
 
+import br.com.bassi.trabalho_facu_lp1.exceptions.CredenciaisInvalidasException;
+import br.com.bassi.trabalho_facu_lp1.exceptions.EntidadeNaoEncontradaException;
 import br.com.bassi.trabalho_facu_lp1.infra.JwtUtil;
 import br.com.bassi.trabalho_facu_lp1.repositories.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,10 +18,10 @@ public class AuthService {
 
     public String autenticar(String email, String senha) {
         var usuario = usuarioRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("Credenciais inválidas"));
+                .orElseThrow(() -> new EntidadeNaoEncontradaException("Credenciais inválidas"));
 
         if (!encoder.matches(senha, usuario.getSenha())) {
-            throw new RuntimeException("Credenciais inválidas");
+            throw new CredenciaisInvalidasException("Credenciais inválidas");
         }
 
         return jwtUtil.gerarToken(usuario.getEmail(), usuario.getCargo().name());

@@ -84,7 +84,6 @@ public class FuncionarioService {
                 usuario.getId(),
                 usuario.getNome(),
                 usuario.getEmail(),
-                usuario.getSenha(),
                 usuario.getCpf(),
                 usuario.getCargo(),
                 usuario.getDepartamento()
