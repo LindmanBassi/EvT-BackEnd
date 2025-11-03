@@ -4,6 +4,7 @@ import br.com.bassi.trabalho_facu_lp1.domain.enuns.EnumCargos;
 import br.com.bassi.trabalho_facu_lp1.dto.FuncionarioDTO;
 import br.com.bassi.trabalho_facu_lp1.dto.response.FuncionarioResponseDTO;
 import br.com.bassi.trabalho_facu_lp1.service.FuncionarioService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -18,33 +19,33 @@ public class FuncionarioController {
 
     private final FuncionarioService funcionarioService;
 
-    @PreAuthorize("hasAuthority('GERENTE')")
+   // @PreAuthorize("hasAuthority('GERENTE')")
     @GetMapping
     public ResponseEntity<List<FuncionarioResponseDTO>> listarTodos() {
         return ResponseEntity.ok(funcionarioService.listarTodosFuncionarios());
     }
 
-    @PreAuthorize("hasAuthority('GERENTE')")
+    //@PreAuthorize("hasAuthority('GERENTE')")
     @GetMapping("/cargo/{cargo}")
     public ResponseEntity<List<FuncionarioResponseDTO>> listarPorCargo(@PathVariable EnumCargos cargo) {
         return ResponseEntity.ok(funcionarioService.listarPorCargo(cargo));
     }
 
-    @PreAuthorize("hasAuthority('GERENTE')")
+    //@PreAuthorize("hasAuthority('GERENTE')")
     @PostMapping
-    public ResponseEntity<FuncionarioDTO> cadastrarFuncionario(@RequestBody FuncionarioDTO dto) {
+    public ResponseEntity<FuncionarioDTO> cadastrarFuncionario(@RequestBody  @Valid FuncionarioDTO dto) {
         FuncionarioDTO novo = funcionarioService.cadastrarFuncionario(dto);
         return ResponseEntity.ok(novo);
     }
 
-    @PreAuthorize("hasAuthority('GERENTE')")
+   //@PreAuthorize("hasAuthority('GERENTE')")
     @PutMapping("/{id}")
-    public ResponseEntity<FuncionarioDTO> editarFuncionario(@PathVariable Long id, @RequestBody FuncionarioDTO dto) {
+    public ResponseEntity<FuncionarioDTO> editarFuncionario(@PathVariable Long id, @RequestBody @Valid FuncionarioDTO dto) {
         FuncionarioDTO atualizado = funcionarioService.editarFuncionario(id, dto);
         return ResponseEntity.ok(atualizado);
     }
 
-    @PreAuthorize("hasAuthority('GERENTE')")
+    //@PreAuthorize("hasAuthority('GERENTE')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> excluirFuncionario(@PathVariable Long id) {
         funcionarioService.excluirFuncionario(id);

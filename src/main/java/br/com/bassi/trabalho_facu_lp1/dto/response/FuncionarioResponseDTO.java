@@ -21,9 +21,6 @@ public record FuncionarioResponseDTO(
         @Pattern(regexp = "\\d{11}", message = "O CPF deve conter 11 dígitos numéricos.")
         String cpf,
 
-        @NotBlank(message = "A senha é obrigatória")
-        @Size(min = 6, message = "A senha deve ter no mínimo 6 caracteres.")
-        String senha,
 
         @NotBlank(message = "O cargo é obrigatório")
         EnumCargos cargo,
