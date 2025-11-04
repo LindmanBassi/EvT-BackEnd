@@ -1,9 +1,9 @@
 package br.com.bassi.trabalho_facu_lp1.controller;
 
-import br.com.bassi.trabalho_facu_lp1.domain.Usuario;
-import br.com.bassi.trabalho_facu_lp1.domain.enuns.EnumCargos;
 import br.com.bassi.trabalho_facu_lp1.dto.UsuarioDTO;
+import br.com.bassi.trabalho_facu_lp1.dto.response.UsuarioResponseDTO;
 import br.com.bassi.trabalho_facu_lp1.service.UsuarioService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -18,33 +18,26 @@ public class UsuarioController {
 
     private final UsuarioService usuarioService;
 
-    @PreAuthorize("hasAuthority('GERENTE')")
+    //@PreAuthorize("hasAuthority('GERENTE')")
     @GetMapping
-    public ResponseEntity<List<Usuario>> listarTodos() {
+    public ResponseEntity<List<UsuarioResponseDTO>> listarTodos() {
         return ResponseEntity.ok(usuarioService.listarTodos());
     }
 
-
-    @PreAuthorize("hasAuthority('GERENTE')")
-    @GetMapping("/visitantes")
-    public ResponseEntity<List<Usuario>> listarVisitantes() {
-        return ResponseEntity.ok(usuarioService.listarPorCargo(EnumCargos.VISITANTE));
+    @PostMapping
+    public ResponseEntity<UsuarioDTO> cadastrarUsuario(@RequestBody @Valid UsuarioDTO dto) {
+        UsuarioDTO novo = usuarioService.cadastrarUsuario(dto);
+        return ResponseEntity.ok(novo);
     }
 
-    @PreAuthorize("hasAuthority('GERENTE')")
-    @GetMapping("/nao-visitantes")
-    public ResponseEntity<List<Usuario>> listarNaoVisitantes() {
-        return ResponseEntity.ok(usuarioService.listarDiferenteDeCargo(EnumCargos.VISITANTE));
-    }
-
-    @PreAuthorize("hasAuthority('GERENTE')")
+    //@PreAuthorize("hasAuthority('GERENTE')")
     @PutMapping("/{id}")
-    public ResponseEntity<Void> editarUsuario(@PathVariable Long id, @RequestBody UsuarioDTO dto) {
-        usuarioService.editarUsuario(id, dto);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<UsuarioDTO> editarUsuario(@PathVariable Long id, @RequestBody @Valid UsuarioDTO dto) {
+        UsuarioDTO atualizado = usuarioService.editarUsuario(id, dto);
+        return ResponseEntity.ok(atualizado);
     }
 
-    @PreAuthorize("hasAuthority('GERENTE')")
+    //@PreAuthorize("hasAuthority('GERENTE')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> excluirUsuario(@PathVariable Long id) {
         usuarioService.excluirUsuario(id);

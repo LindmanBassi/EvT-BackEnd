@@ -19,7 +19,8 @@ public class Local {
     @Column(unique = true, nullable = false)
     private String nome;
 
-    private int capacidade;
+    @Column(nullable = false)
+    private Integer capacidade;
 
     @Embedded
     private Endereco endereco;

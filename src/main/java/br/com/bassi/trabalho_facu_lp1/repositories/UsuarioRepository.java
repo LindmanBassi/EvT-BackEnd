@@ -2,6 +2,8 @@ package br.com.bassi.trabalho_facu_lp1.repositories;
 
 import br.com.bassi.trabalho_facu_lp1.domain.Usuario;
 import br.com.bassi.trabalho_facu_lp1.domain.enuns.EnumCargos;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -14,4 +16,5 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
     List<Usuario> findByCargoNot(EnumCargos cargo);
     boolean existsByEmail(String email);
 
+    boolean existsByCpf(@NotBlank(message = "O CPF é obrigatório.") @Pattern(regexp = "\\d{11}", message = "O CPF deve conter 11 dígitos numéricos.") String cpf);
 }

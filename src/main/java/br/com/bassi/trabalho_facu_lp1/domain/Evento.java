@@ -20,18 +20,24 @@ public class Evento {
     private Long id;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private EnumTipoEvento tipoEvento;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private EnumEstadoEvento estadoEvento;
 
+    @Column(nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date data;
 
     private String descricao;
 
+    @Column(nullable = false)
     private String titulo;
 
-    private int vagas;
+    @Column(nullable = false)
+    private Integer vagas;
 
     @ManyToOne
     @JoinColumn(name = "local_id")

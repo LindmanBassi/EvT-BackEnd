@@ -1,10 +1,15 @@
-package br.com.bassi.trabalho_facu_lp1.dto;
+package br.com.bassi.trabalho_facu_lp1.dto.response;
 
 import br.com.bassi.trabalho_facu_lp1.domain.enuns.EnumCargos;
 import br.com.bassi.trabalho_facu_lp1.domain.enuns.EnumDepartamento;
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 
-public record FuncionarioDTO(
+public record FuncionarioResponseDTO(
+        Long id,
+
         @NotBlank(message = "O nome é obrigatório")
         String nome,
 
@@ -16,13 +21,10 @@ public record FuncionarioDTO(
         @Pattern(regexp = "\\d{11}", message = "O CPF deve conter 11 dígitos numéricos.")
         String cpf,
 
-        @NotBlank(message = "A senha é obrigatória")
-        @Size(min = 6, message = "A senha deve ter no mínimo 6 caracteres.")
-        String senha,
 
-        @NotNull(message = "O cargo é obrigatório.")
+        @NotBlank(message = "O cargo é obrigatório")
         EnumCargos cargo,
 
-        @NotNull(message = "O departamento é obrigatório.")
+        @NotBlank(message = "O departamenento é obrigatório")
         EnumDepartamento departamento
 ) {}
