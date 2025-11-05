@@ -1,6 +1,6 @@
 package br.com.bassi.trabalho_facu_lp1.controller;
 
-import br.com.bassi.trabalho_facu_lp1.domain.Usuario;
+import br.com.bassi.trabalho_facu_lp1.domain.Evento;
 import br.com.bassi.trabalho_facu_lp1.dto.ParticipacaoEventoDTO;
 import br.com.bassi.trabalho_facu_lp1.dto.FuncionarioDTO;
 import br.com.bassi.trabalho_facu_lp1.service.ParticipacaoEventoService;
@@ -23,11 +23,18 @@ public class ParticipacaoEventoController {
         return ResponseEntity.ok().build();
     }
 
-    @PreAuthorize("!hasAuthority('VISITANTE')")
+   // @PreAuthorize("!hasAuthority('VISITANTE')")
     @GetMapping("/evento/{eventoId}/usuarios")
     public ResponseEntity<List<FuncionarioDTO>> listarUsuariosDoEvento(@PathVariable Long eventoId) {
         List<FuncionarioDTO> usuarios = participacaoEventoService.listarUsuariosPorEvento(eventoId);
         return ResponseEntity.ok(usuarios);
+    }
+
+    @GetMapping("/meus-eventos")
+    //@PreAuthorize("hasAnyAuthority('VISITANTE', 'GERENTE', 'FUNCIONARIO')")
+    public ResponseEntity<List<Evento>> listarEventosDoUsuarioLogado() {
+        List<Evento> eventos = participacaoEventoService.listarEventosDoUsuarioLogado();
+        return ResponseEntity.ok(eventos);
     }
 
 }

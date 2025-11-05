@@ -9,7 +9,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+
 import java.net.URI;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @RestController
@@ -20,10 +23,13 @@ public class EventoController {
     private final EventoService eventoService;
 
     //@PreAuthorize("!hasAuthority('VISITANTE')")
+
     @PostMapping
     public ResponseEntity<EventoDTO> criarEvento(@RequestBody @Valid EventoDTO eventoDTO) {
         var criado = eventoService.criarEvento(eventoDTO);
-        return ResponseEntity.created(URI.create("/eventos/" + criado.titulo())).body(criado);
+        String encodedTitle = URLEncoder.encode(criado.titulo(), StandardCharsets.UTF_8);
+        URI uri = URI.create("/eventos/" + encodedTitle);
+        return ResponseEntity.created(uri).body(criado);
     }
 
     @GetMapping
@@ -48,7 +54,7 @@ public class EventoController {
     //@PreAuthorize("!hasAuthority('VISITANTE')")
     @PutMapping("/{id}")
     public ResponseEntity<EventoDTO> editarEvento(@PathVariable Long id, @RequestBody @Valid EventoDTO eventoDTO) {
-        var atualizado = eventoService.editarEvento(id, eventoDTO);
-        return ResponseEntity.ok(atualizado);
+        var att = eventoService.editarEvento(id, eventoDTO);
+        return ResponseEntity.ok(att);
     }
 }

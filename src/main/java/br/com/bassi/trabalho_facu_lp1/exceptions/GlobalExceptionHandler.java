@@ -37,6 +37,13 @@ public class GlobalExceptionHandler {
                 .body(new ErroResponse(HttpStatus.BAD_REQUEST.value(), ex.getMessage()));
     }
 
+    @ExceptionHandler(TituloJaCadastradoException.class)
+    public ResponseEntity<ErroResponse> handleEmailJaCadastrado(TituloJaCadastradoException ex) {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(new ErroResponse(HttpStatus.BAD_REQUEST.value(), ex.getMessage()));
+    }
+
     @ExceptionHandler(CpfJaCadastradoException.class)
     public ResponseEntity<ErroResponse> handleCpfJaCadastrado(CpfJaCadastradoException ex) {
         return ResponseEntity
