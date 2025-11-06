@@ -43,6 +43,12 @@ public class UsuarioService {
         usuario.setNome(dto.nome());
         usuario.setEmail(dto.email());
         usuario.setCpf(dto.cpf());
+        if (usuarioRepository.existsByEmail(dto.email())) {
+            throw new EmailJaCadastradoException("E-mail já cadastrado!");
+        }
+        if (usuarioRepository.existsByCpf(dto.cpf())) {
+            throw new CpfJaCadastradoException("CPF já cadastrado!");
+        }
         if (dto.senha() != null && !dto.senha().isEmpty()) {
             usuario.setSenha(passwordEncoder.encode(dto.senha()));
         }
@@ -76,9 +82,9 @@ public class UsuarioService {
                 usuario.getId(),
                 usuario.getNome(),
                 usuario.getEmail(),
-                usuario.getSenha(),
                 usuario.getCpf()
         );
     }
+
 }
 

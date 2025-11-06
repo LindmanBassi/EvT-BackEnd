@@ -73,6 +73,10 @@ public class EventoService {
                         evento.setEstadoEvento(dto.estadoEvento() != null ? dto.estadoEvento() : EnumEstadoEvento.ABERTO);
                     }
 
+                    if (eventoRepository.existsByTitulo(dto.titulo())) {
+                        throw new TituloJaCadastradoException("Titulo já cadastrado!");
+                    }
+
                     if (dto.palestranteId() != null) {
                         Usuario palestrante = usuarioRepository.findById(dto.palestranteId())
                                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Palestrante não encontrado"));

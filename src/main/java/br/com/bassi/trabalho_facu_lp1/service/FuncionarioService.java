@@ -43,6 +43,13 @@ public class FuncionarioService {
         usuario.setCpf(dto.cpf());
         usuario.setCargo(dto.cargo());
         usuario.setDepartamento(dto.departamento());
+
+        if (usuarioRepository.existsByEmail(dto.email())) {
+            throw new EmailJaCadastradoException("E-mail já cadastrado!");
+        }
+        if (usuarioRepository.existsByCpf(dto.cpf())) {
+            throw new CpfJaCadastradoException("CPF já cadastrado!");
+        }
         if (dto.senha() != null && !dto.senha().isEmpty()) {
             usuario.setSenha(passwordEncoder.encode(dto.senha()));
         }

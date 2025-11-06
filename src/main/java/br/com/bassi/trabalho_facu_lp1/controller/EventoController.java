@@ -22,8 +22,7 @@ public class EventoController {
 
     private final EventoService eventoService;
 
-    //@PreAuthorize("!hasAuthority('VISITANTE')")
-
+    @PreAuthorize("!hasAuthority('VISITANTE')")
     @PostMapping
     public ResponseEntity<EventoDTO> criarEvento(@RequestBody @Valid EventoDTO eventoDTO) {
         var criado = eventoService.criarEvento(eventoDTO);
@@ -44,14 +43,14 @@ public class EventoController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    //@PreAuthorize("!hasAuthority('VISITANTE')")
+    @PreAuthorize("!hasAuthority('VISITANTE')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletarEvento(@PathVariable Long id) {
         eventoService.deletarEvento(id);
         return ResponseEntity.noContent().build();
     }
 
-    //@PreAuthorize("!hasAuthority('VISITANTE')")
+    @PreAuthorize("!hasAuthority('VISITANTE')")
     @PutMapping("/{id}")
     public ResponseEntity<EventoDTO> editarEvento(@PathVariable Long id, @RequestBody @Valid EventoDTO eventoDTO) {
         var att = eventoService.editarEvento(id, eventoDTO);
