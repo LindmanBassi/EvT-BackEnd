@@ -19,33 +19,33 @@ public class FuncionarioController {
 
     private final FuncionarioService funcionarioService;
 
-   // @PreAuthorize("hasAuthority('GERENTE')")
+    @PreAuthorize("hasAuthority('GERENTE')")
     @GetMapping
     public ResponseEntity<List<FuncionarioResponseDTO>> listarTodos() {
         return ResponseEntity.ok(funcionarioService.listarTodosFuncionarios());
     }
 
-    //@PreAuthorize("hasAuthority('GERENTE')")
+    @PreAuthorize("hasAuthority('GERENTE')")
     @GetMapping("/cargo/{cargo}")
     public ResponseEntity<List<FuncionarioResponseDTO>> listarPorCargo(@PathVariable EnumCargos cargo) {
         return ResponseEntity.ok(funcionarioService.listarPorCargo(cargo));
     }
 
-    //@PreAuthorize("hasAuthority('GERENTE')")
+    @PreAuthorize("hasAuthority('GERENTE')")
     @PostMapping
     public ResponseEntity<FuncionarioDTO> cadastrarFuncionario(@RequestBody  @Valid FuncionarioDTO dto) {
         FuncionarioDTO novo = funcionarioService.cadastrarFuncionario(dto);
         return ResponseEntity.ok(novo);
     }
 
-   //@PreAuthorize("hasAuthority('GERENTE')")
+    @PreAuthorize("hasAuthority('GERENTE')")
     @PutMapping("/{id}")
     public ResponseEntity<FuncionarioDTO> editarFuncionario(@PathVariable Long id, @RequestBody @Valid FuncionarioDTO dto) {
         FuncionarioDTO atualizado = funcionarioService.editarFuncionario(id, dto);
         return ResponseEntity.ok(atualizado);
     }
 
-    //@PreAuthorize("hasAuthority('GERENTE')")
+    @PreAuthorize("hasAuthority('GERENTE')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> excluirFuncionario(@PathVariable Long id) {
         funcionarioService.excluirFuncionario(id);

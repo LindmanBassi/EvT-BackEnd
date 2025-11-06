@@ -23,7 +23,7 @@ public class ParticipacaoEventoController {
         return ResponseEntity.ok().build();
     }
 
-   // @PreAuthorize("!hasAuthority('VISITANTE')")
+    @PreAuthorize("!hasAuthority('VISITANTE')")
     @GetMapping("/evento/{eventoId}/usuarios")
     public ResponseEntity<List<FuncionarioDTO>> listarUsuariosDoEvento(@PathVariable Long eventoId) {
         List<FuncionarioDTO> usuarios = participacaoEventoService.listarUsuariosPorEvento(eventoId);
@@ -31,7 +31,6 @@ public class ParticipacaoEventoController {
     }
 
     @GetMapping("/meus-eventos")
-    //@PreAuthorize("hasAnyAuthority('VISITANTE', 'GERENTE', 'FUNCIONARIO')")
     public ResponseEntity<List<Evento>> listarEventosDoUsuarioLogado() {
         List<Evento> eventos = participacaoEventoService.listarEventosDoUsuarioLogado();
         return ResponseEntity.ok(eventos);
