@@ -33,7 +33,7 @@ public class Evento {
 
     private String descricao;
 
-    @Column(nullable = false)
+    @Column(unique = true, nullable = false)
     private String titulo;
 
     @Column(nullable = false)
