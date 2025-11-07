@@ -6,6 +6,7 @@ import br.com.bassi.trabalho_facu_lp1.dto.FuncionarioDTO;
 import br.com.bassi.trabalho_facu_lp1.dto.response.FuncionarioResponseDTO;
 import br.com.bassi.trabalho_facu_lp1.exceptions.CpfJaCadastradoException;
 import br.com.bassi.trabalho_facu_lp1.exceptions.EmailJaCadastradoException;
+import br.com.bassi.trabalho_facu_lp1.exceptions.EntidadeNaoEncontradaException;
 import br.com.bassi.trabalho_facu_lp1.repositories.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -36,7 +37,7 @@ public class FuncionarioService {
 
     public FuncionarioDTO editarFuncionario(Long id, FuncionarioDTO dto) {
         Usuario usuario = usuarioRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Funcionário não encontrado"));
+                .orElseThrow(() -> new EntidadeNaoEncontradaException("Funcionário não encontrado"));
 
         usuario.setNome(dto.nome());
         usuario.setEmail(dto.email());
@@ -72,6 +73,9 @@ public class FuncionarioService {
     }
 
     public void excluirFuncionario(Long id) {
+        Usuario usuario = usuarioRepository.findById(id)
+                .orElseThrow(() -> new EntidadeNaoEncontradaException("Funcionário não encontrado"));
+
         usuarioRepository.deleteById(id);
     }
 
