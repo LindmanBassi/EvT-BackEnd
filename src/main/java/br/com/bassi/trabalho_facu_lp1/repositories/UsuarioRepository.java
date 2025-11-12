@@ -17,4 +17,8 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
     boolean existsByEmail(String email);
 
     boolean existsByCpf(@NotBlank(message = "O CPF é obrigatório.") @Pattern(regexp = "\\d{11}", message = "O CPF deve conter 11 dígitos numéricos.") String cpf);
+
+    boolean existsByEmailAndIdNot(String email, Long id);
+    boolean existsByCpfAndIdNot(String cpf, Long id);
+    
 }
