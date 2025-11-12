@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class ParticipacaoEventoService {
+public class    ParticipacaoEventoService {
 
     private final EventoRepository eventoRepository;
     private final ParticipacaoEventoRepository participacaoEventoRepository;
