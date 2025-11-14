@@ -18,7 +18,7 @@ public class UsuarioController {
 
     private final UsuarioService usuarioService;
 
-    @PreAuthorize("hasAuthority('GERENTE')")
+    @PreAuthorize("hasAuthority(T(br.com.bassi.trabalho_facu_lp1.domain.enuns.EnumCargos).GERENTE.name())")
     @GetMapping
     public ResponseEntity<List<UsuarioResponseDTO>> listarTodos() {
         return ResponseEntity.ok(usuarioService.listarTodos());
@@ -30,14 +30,14 @@ public class UsuarioController {
         return ResponseEntity.ok(novo);
     }
 
-    @PreAuthorize("hasAuthority('GERENTE')")
+    @PreAuthorize("hasAuthority(T(br.com.bassi.trabalho_facu_lp1.domain.enuns.EnumCargos).GERENTE.name())")
     @PutMapping("/{id}")
     public ResponseEntity<UsuarioDTO> editarUsuario(@PathVariable Long id, @RequestBody @Valid UsuarioDTO dto) {
         UsuarioDTO atualizado = usuarioService.editarUsuario(id, dto);
         return ResponseEntity.ok(atualizado);
     }
 
-    @PreAuthorize("hasAuthority('GERENTE')")
+    @PreAuthorize("hasAuthority(T(br.com.bassi.trabalho_facu_lp1.domain.enuns.EnumCargos).GERENTE.name())")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> excluirUsuario(@PathVariable Long id) {
         usuarioService.excluirUsuario(id);

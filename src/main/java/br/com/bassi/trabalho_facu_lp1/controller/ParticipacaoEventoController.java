@@ -23,7 +23,7 @@ public class ParticipacaoEventoController {
         return ResponseEntity.ok().build();
     }
 
-    @PreAuthorize("!hasAuthority('VISITANTE')")
+    @PreAuthorize("!hasAuthority(T(br.com.bassi.trabalho_facu_lp1.domain.enuns.EnumCargos).VISITANTE.name())")
     @GetMapping("/evento/{eventoId}/usuarios")
     public ResponseEntity<List<FuncionarioDTO>> listarUsuariosDoEvento(@PathVariable Long eventoId) {
         List<FuncionarioDTO> usuarios = participacaoEventoService.listarUsuariosPorEvento(eventoId);
